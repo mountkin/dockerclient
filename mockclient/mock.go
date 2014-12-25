@@ -83,7 +83,7 @@ func (client *MockClient) RemoveContainer(id string, force bool) error {
 	return args.Error(0)
 }
 
-func (client *MockClient) ListImages() ([]*dockerclient.Image, error) {
+func (client *MockClient) ListImages(all bool) ([]*dockerclient.Image, error) {
 	args := client.Mock.Called()
 	return args.Get(0).([]*dockerclient.Image), args.Error(1)
 }

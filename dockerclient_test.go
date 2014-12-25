@@ -112,13 +112,13 @@ func TestContainerLogs(t *testing.T) {
 		t.Fatalf("wrong number of stderr logs: len=%d", len(stdoutLogLines))
 	}
 	for i, line := range stdoutLogLines {
-		expectedSuffix := fmt.Sprintf("Z line %d", 41+2*i)
+		expectedSuffix := fmt.Sprintf("line %d", 41+2*i)
 		if !strings.HasSuffix(line, expectedSuffix) {
 			t.Fatalf("expected stdout log line \"%s\" to end with \"%s\"", line, expectedSuffix)
 		}
 	}
 	for i, line := range stderrLogLines {
-		expectedSuffix := fmt.Sprintf("Z line %d", 40+2*i)
+		expectedSuffix := fmt.Sprintf("line %d", 40+2*i)
 		if !strings.HasSuffix(line, expectedSuffix) {
 			t.Fatalf("expected stderr log line \"%s\" to end with \"%s\"", line, expectedSuffix)
 		}

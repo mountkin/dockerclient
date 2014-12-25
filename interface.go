@@ -22,7 +22,7 @@ type Client interface {
 	Version() (*Version, error)
 	PullImage(name string, auth *AuthConfig) error
 	RemoveContainer(id string, force bool) error
-	ListImages() ([]*Image, error)
+	ListImages(all bool) ([]*Image, error)
 	RemoveImage(name string) error
 	PauseContainer(name string) error
 	UnpauseContainer(name string) error
