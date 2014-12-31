@@ -321,6 +321,32 @@ func (client *DockerClient) ListImages(all bool) ([]*Image, error) {
 	return images, nil
 }
 
+func (client *DockerClient) ImageHistory(id string) ([]ImageHistory, error) {
+	uri := fmt.Sprintf("/%s/images/%s/history", APIVersion, id)
+	data, err := client.doRequest("GET", uri, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	var h []ImageHistory
+	if err := json.Unmarshal(data, &h); err != nil {
+		return nil, err
+	}
+	return h, nil
+}
+
+func (client *DockerClient) InspectImage(id string) (*ImageInfo, error) {
+	uri := fmt.Sprintf("/%s/images/%s/json", APIVersion, id)
+	data, err := client.doRequest("GET", uri, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	var info = &ImageInfo{}
+	if err := json.Unmarshal(data, info); err != nil {
+		return nil, err
+	}
+	return info, nil
+}
+
 func (client *DockerClient) RemoveImage(name string) error {
 	uri := fmt.Sprintf("/%s/images/%s", APIVersion, name)
 	_, err := client.doRequest("DELETE", uri, nil, nil)

@@ -132,9 +132,10 @@ type Event struct {
 }
 
 type Version struct {
-	Version   string
-	GitCommit string
-	GoVersion string
+	Version    string
+	GitCommit  string
+	GoVersion  string
+	ApiVersion string
 }
 
 type RespContainersCreate struct {
@@ -149,6 +150,31 @@ type Image struct {
 	RepoTags    []string
 	Size        int64
 	VirtualSize int64
+}
+
+type ImageInfo struct {
+	Id              string
+	Parent          string
+	Comment         string
+	Created         time.Time
+	Container       string
+	ContainerConfig ContainerConfig
+	Config          ContainerConfig
+	DockerVersion   string
+	Author          string
+	Architecture    string
+	Size            int64
+	Os              string
+	VirtualSize     int64
+	Checksum        string
+}
+
+type ImageHistory struct {
+	Id        string
+	Tags      []string
+	Created   int64
+	CreatedBy string
+	Size      int64
 }
 
 type Info struct {
