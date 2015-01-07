@@ -88,6 +88,16 @@ func (client *MockClient) ListImages(all bool) ([]*dockerclient.Image, error) {
 	return args.Get(0).([]*dockerclient.Image), args.Error(1)
 }
 
+func (client *MockClient) ImageHistory(id string) ([]dockerclient.ImageHistory, error) {
+	args := client.Mock.Called()
+	return args.Get(0).([]dockerclient.ImageHistory), args.Error(1)
+}
+
+func (client *MockClient) InspectImage(id string) (*dockerclient.ImageInfo, error) {
+	args := client.Mock.Called()
+	return args.Get(0).(*dockerclient.ImageInfo), args.Error(1)
+}
+
 func (client *MockClient) RemoveImage(name string) error {
 	args := client.Mock.Called(name)
 	return args.Error(0)
