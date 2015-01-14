@@ -305,10 +305,14 @@ func (client *DockerClient) RemoveContainer(id string, force bool) error {
 	return err
 }
 
-func (client *DockerClient) ListImages(all bool) ([]*Image, error) {
-	uri := fmt.Sprintf("/%s/images/json", APIVersion)
+func (client *DockerClient) ListImages(all bool, dangling bool) ([]*Image, error) {
+	argAll := 0
 	if all {
-		uri += "?all=1"
+		argAll = 1
+	}
+	uri := fmt.Sprintf("/%s/images/json?all=%d", APIVersion, argAll)
+	if dangling {
+		uri += fmt.Sprintf("&filters={%q:[%q]}", "dangling", "true")
 	}
 	data, err := client.doRequest("GET", uri, nil, nil)
 	if err != nil {

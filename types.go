@@ -102,6 +102,7 @@ type ContainerInfo struct {
 	SysInitPath    string
 	ResolvConfPath string
 	Volumes        map[string]string
+	VolumesRW      map[string]bool
 	HostConfig     *HostConfig
 }
 

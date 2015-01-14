@@ -83,18 +83,18 @@ func (client *MockClient) RemoveContainer(id string, force bool) error {
 	return args.Error(0)
 }
 
-func (client *MockClient) ListImages(all bool) ([]*dockerclient.Image, error) {
-	args := client.Mock.Called()
+func (client *MockClient) ListImages(all bool, dangling bool) ([]*dockerclient.Image, error) {
+	args := client.Mock.Called(all, dangling)
 	return args.Get(0).([]*dockerclient.Image), args.Error(1)
 }
 
 func (client *MockClient) ImageHistory(id string) ([]dockerclient.ImageHistory, error) {
-	args := client.Mock.Called()
+	args := client.Mock.Called(id)
 	return args.Get(0).([]dockerclient.ImageHistory), args.Error(1)
 }
 
 func (client *MockClient) InspectImage(id string) (*dockerclient.ImageInfo, error) {
-	args := client.Mock.Called()
+	args := client.Mock.Called(id)
 	return args.Get(0).(*dockerclient.ImageInfo), args.Error(1)
 }
 
