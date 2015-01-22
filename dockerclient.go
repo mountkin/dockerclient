@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 	"sync/atomic"
@@ -71,6 +72,9 @@ func (client *DockerClient) doRequest(method string, path string, body []byte, h
 		return nil, err
 	}
 	req.Header.Add("Content-Type", "application/json")
+	if token := os.Getenv("AUTH_KEY"); token != "" {
+		req.Header.Add("Auth-Token", token)
+	}
 	if headers != nil {
 		for header, value := range headers {
 			req.Header.Add(header, value)
@@ -245,7 +249,15 @@ func (client *DockerClient) StartMonitorEvents(cb Callback, args ...interface{})
 
 func (client *DockerClient) getEvents(cb Callback, args ...interface{}) {
 	uri := fmt.Sprintf("%s/%s/events", client.URL.String(), APIVersion)
-	resp, err := client.HTTPClient.Get(uri)
+	req, err := http.NewRequest("GET", uri, nil)
+	if err != nil {
+		log.Printf("GET %s failed: %v", uri, err)
+		return
+	}
+	if token := os.Getenv("AUTH_KEY"); token != "" {
+		req.Header.Add("Auth-Token", token)
+	}
+	resp, err := client.HTTPClient.Do(req)
 	if err != nil {
 		log.Printf("GET %s failed: %v", uri, err)
 		return
